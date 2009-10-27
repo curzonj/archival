@@ -1,4 +1,10 @@
 --- 
+vendor/plugins/redbox: 
+  squashed: true
+  url: svn://rubyforge.org/var/svn/ambroseplugins/redbox
+  type: svn
+  revision: 13
+  remote: braid/vendor/plugins/redbox
 vendor/plugins/spawn: 
   squashed: true
   url: git://github.com/tra/spawn.git
