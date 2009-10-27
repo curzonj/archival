@@ -1,0 +1,31 @@
+
+.content
+  .pagination{ :style => 'float:right' }
+    = will_paginate @documents, :page_links => false
+
+  .list_page_controls
+    .links{ :style => 'float:left;margin-right:10px' }
+      = link_to "Upload", new_document_path
+      = link_to "Inbox", search_documents_path(:text => 'inbox')
+    - form_tag(search_documents_path, :method => 'GET')do
+      = label_tag :text, "Search"
+      = text_field_tag :text, params['text']
+      =# label_tag :date
+      =# text_field_tag :date
+      = submit_tag "Search"
+
+  .results
+    - list_by(4, @documents) do |sets|
+      .attachment_search_row
+        - sets.each do |res|
+          .attachment_search_item{ :document_id => res.id }
+            .thumbnail
+              %a{ :href => edit_document_path(res), :target => "_blank" }
+                = image_tag res.thumbnails(100).first.url rescue nil
+            .description
+              = res_attr(res, "Who", 'subject')
+              = res_attr(res, "What", 'predicate')
+              = res_attr(res, "Date", 'issued_on')
+              = res_attr(res, "Tags", 'tags')
+              = res_attr(res, "Description", 'notes')
+

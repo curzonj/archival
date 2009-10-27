@@ -1,0 +1,92 @@
+.tag_cloud {
+}
+
+.sidenav {
+  width: 200px;
+  float: left;
+
+  font-size: 12px;
+  margin: 5px;
+  padding: 5px;
+  border: 1px dashed blue;
+}
+
+.sidenav td {
+  font-size: 12px;
+}
+
+.list_page_controls {
+  margin-left: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.attachment_search_row {
+  float: left;
+}
+
+.attachment_search_item {
+  border: 1px dashed green;
+  margin: 2px;
+  padding: 3px;
+  float: left;
+  width: 230px;
+  height: 110px;
+  overflow: hidden;
+}
+
+.attachment_search_item .thumbnail {
+  float: left;
+  width: 80px;
+  overflow: hidden;
+}
+
+a img {
+  border: none;
+}
+
+a {
+  cursor: pointer;
+}
+
+.attachment_search_item .description {
+  font-size: 11px;
+  float: right;
+  width: 145px;
+  margin-left: 5px;
+}
+
+.title {
+  padding: 10px;
+  color: red;
+}
+
+tr.odd td {
+  background-color: lightblue;
+}
+
+td.balance-errors {
+  color: red;
+}
+
+td.number {
+  text-align: right;
+}
+
+#incomestatement {
+  width: 550px;
+  position:relative;
+}
+
+/* For the income statement */
+.ledger_line span.amount {
+  position: absolute;
+  text-align: right;
+  width: 100px;
+  left: 450px;
+}
+
+.ledger_line {
+  border-bottom: 1px dashed blue;
+}
+

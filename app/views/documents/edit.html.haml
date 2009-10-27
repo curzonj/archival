@@ -1,0 +1,31 @@
+= render :partial => 'application/model_errors', :locals => { :model => @document }
+
+- form_for @document do |f|
+  = f.label :subject, "Who"
+  = f.text_field :subject
+  = f.label :predicate, "What"
+  = f.text_field :predicate
+
+  %br
+  = f.label :issued_on
+  = f.text_field :issued_on
+  = f.label :tags, "Tags"
+  = f.text_field :tags
+
+  %br
+  = f.label :notes
+  = f.text_area :notes, :size => "80x3"
+  = f.submit
+  = link_to "Cancel", documents_path
+
+= link_to "Download", @document.public_url
+
+%br
+- @document.thumbnails(600).each do |img|
+  - if img.has_source?
+    = link_to_remote_redbox(image_tag(img.url), :url => lightbox_path(:key => img.source), :script => false)
+  - else
+    %a{ :href => "javascript:alert('Source data not available')" }
+      = image_tag img.url
+  
+

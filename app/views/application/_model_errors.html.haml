@@ -1,0 +1,4 @@
+- unless model.errors.empty?
+  %ul
+  - model.errors.full_messages.each do |e|
+    %li= e

@@ -1,0 +1,15 @@
+%html
+  %head
+    = stylesheet_link_tag "application", 'redbox'
+
+    %script{ :type => "text/javascript", :src => 'http://www.google.com/jsapi' }
+    :javascript
+      google.load('jquery', '1');
+
+    = javascript_include_tag :defaults, 'redbox'
+
+    = yield :head
+
+  %body
+    .container
+      = yield

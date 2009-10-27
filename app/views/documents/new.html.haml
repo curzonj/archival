@@ -1,0 +1,8 @@
+Upload Document:
+
+= render :partial => 'application/model_errors', :locals => { :model => @document }
+
+- form_for :document, @document, :url => documents_path, :html => { :multipart => true } do |f|
+  = f.file_field :uploaded_file
+  = f.submit "Upload"
+  = link_to "Cancel", documents_path
