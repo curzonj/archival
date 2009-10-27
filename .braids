@@ -1,0 +1,8 @@
+--- 
+vendor/plugins/spawn: 
+  squashed: true
+  url: git://github.com/tra/spawn.git
+  branch: master
+  type: git
+  revision: 3a7a730bd7b08a89b757ae6fca26dfd7d60d9109
+  remote: braid/vendor/plugins/spawn
