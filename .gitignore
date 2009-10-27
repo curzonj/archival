@@ -1,0 +1,14 @@
+.DS_Store
+log/*.log
+tmp/**/*
+config/database.yml
+db/*.sqlite3
+db/schema.rb
+vendor/rails
+doc/app
+public/stylesheets/compiled
+*.swp
+config/app_config_local.yml
+db/schema.rb
+public/system
+tmp/restart.txt
