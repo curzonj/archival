@@ -16,7 +16,7 @@ class << MIME::Types
     type = type_for(filename)
 
     if type.empty?
-      '' 
+      'binary/octet-stream' 
     else
       type.first.content_type
     end

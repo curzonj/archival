@@ -10,6 +10,8 @@ module AmazonHelper
     # Anytime you pass a key into an S3 method, call this method first to put
     # the prefix on it if needed
     def key(value)
+      value = value.to_s
+
       prefix.blank? || value.match(/^#{prefix}/) ?
         value : "#{prefix}/#{value}"
     end
@@ -59,9 +61,15 @@ module AmazonHelper
     # from interacting with S3 and already has any prefix applied,
     # the newkey though will have the prefix applied.
     def move_public(oldkey, newkey)
-      s3.interface.move(bucket, oldkey.to_s,
+      move(oldkey, newkey, 'x-amz-acl' => 'public-read')
+    end
+
+    def move(oldkey, newkey, headers={})
+      s3.interface.move(bucket, AmazonHelper.key(oldkey),
                         bucket, AmazonHelper.key(newkey),
-                        :copy, 'x-amz-acl' => 'public-read')
+                        :replace, headers)
+
+      AmazonHelper.bucket.key(newkey)
     end
 
     # A helper for downloading files from s3 to the local server

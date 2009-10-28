@@ -19,7 +19,7 @@ class FileProcessor < SqsProcessor
       file = UploadedFile.new(path)
       file.pdf_images.each_with_index do |image, index|
         key = json['save_path'] + "extracted/#{index}/#{File.basename(image)}"
-        AmazonHelper.upload(key, image)
+        AmazonHelper.upload(key, image, 'Content-Type' => MIME::Types.content_type_for(image))
         upload_thumbnails(image, index, json['save_path'])
       end
     end
@@ -30,7 +30,7 @@ class FileProcessor < SqsProcessor
       path = File.dirname(image) + "thumbnail-#{index}-#{size}.jpg"
       create_thumbnail(image, size, path)
       AmazonHelper.upload(save_path + "thumbs/#{size}/#{index}.jpg",
-                          path, 'content-type' => 'image/jpeg')
+                          path, 'Content-Type' => 'image/jpeg')
     end
   end
 
@@ -43,8 +43,8 @@ class FileProcessor < SqsProcessor
 
     filename = File.basename(key.name)
     new_key = save_path + "original/#{filename}"
-    key.move(new_key)
-    AmazonHelper.bucket.key(new_key)
+
+    AmazonHelper.move(key.name, new_key, 'Content-Type' => MIME::Types.content_type_for(filename))
   end
 
   def download(file)
