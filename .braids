@@ -1,4 +1,11 @@
 --- 
+vendor/plugins/makes_sense: 
+  squashed: false
+  url: git@github.com:curzonj/makes_sense.git
+  branch: master
+  type: git
+  revision: 680aa9b200e8b6aa4f6357e5e06416554e661cf3
+  remote: braid/vendor/plugins/makes-sense
 vendor/plugins/redbox: 
   squashed: true
   url: svn://rubyforge.org/var/svn/ambroseplugins/redbox
