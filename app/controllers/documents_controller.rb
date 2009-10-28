@@ -7,7 +7,7 @@ class DocumentsController < ApplicationController
   end
 
   def search
-    @documents = Document.search params[:text], :page => params[:page]
+    @documents = Document.search(params[:text]).paginate :page => params[:page]
     render :action => 'index'
   end
 
@@ -15,8 +15,9 @@ class DocumentsController < ApplicationController
     @document.tag_list.add 'inbox'
 
     if @document.save
-      Delayed::Job.enqueue ThinkingSphinx::IndexJob.new
-      @document.send_later(:storage_processing)
+      spawn do
+        @document.storage_processing
+      end
 
       # We can't send them to the inbox because it
       # won't quite be ready yet, let them go manually
