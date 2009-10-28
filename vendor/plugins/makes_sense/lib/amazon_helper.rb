@@ -77,10 +77,11 @@ module AmazonHelper
 
     def upload_policy(component, opts={})
       key = AmazonHelper.key("uploads/#{component}/#{Time.new.to_i}/#{rand(1000)}")
+      proto = opts.delete(:ssl) == true ? 'https' : 'http'
 
       {
         :prefix => key,
-        :action => "https://#{AmazonHelper.bucket_name}.s3.amazonaws.com/",
+        :action => "#{proto}://#{AmazonHelper.bucket_name}.s3.amazonaws.com/",
         :params => AmazonHelper.upload_params(key, opts)
       }
     end
@@ -105,13 +106,14 @@ module AmazonHelper
       expires = (opts[:expires] || 30.minutes).from_now.utc.strftime('%Y-%m-%dT%H:%M:%S.000Z')
       bucket = AmazonHelper.bucket
       acl = (opts[:public] == true) ? 'public-read' : 'private'
-      max_filesize =  opts[:max_filesize] || 200.megabyte
+      max_filesize =  opts[:max_filesize] || 10.megabyte
 
       policy = Base64.encode64(
         "{'expiration': '#{expires}',
           'conditions': [
             {'bucket': '#{bucket}'},
             ['starts-with', '$key', '#{prefix}'],
+            ['starts-with', '$Filename', '' ],
             {'acl': '#{acl}'},
             {'success_action_status': '201'},
             ['content-length-range', 0, #{max_filesize}]

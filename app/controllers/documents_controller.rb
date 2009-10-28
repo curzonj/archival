@@ -12,12 +12,10 @@ class DocumentsController < ApplicationController
   end
 
   def create
-    @document.tag_list.add 'inbox'
+    @document.tags ||= 'inbox'
 
     if @document.save
-      spawn do
-        @document.storage_processing
-      end
+      @document.request_processing!
 
       # We can't send them to the inbox because it
       # won't quite be ready yet, let them go manually

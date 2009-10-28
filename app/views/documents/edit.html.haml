@@ -1,20 +1,7 @@
 = render :partial => 'application/model_errors', :locals => { :model => @document }
 
 - form_for @document do |f|
-  = f.label :subject, "Who"
-  = f.text_field :subject
-  = f.label :predicate, "What"
-  = f.text_field :predicate
-
-  %br
-  = f.label :issued_on
-  = f.text_field :issued_on
-  = f.label :tags, "Tags"
-  = f.text_field :tags
-
-  %br
-  = f.label :notes
-  = f.text_area :notes, :size => "80x3"
+  = render :partial => 'form', :locals => { :f => f }
   = f.submit
   = link_to "Cancel", documents_path
 

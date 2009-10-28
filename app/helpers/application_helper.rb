@@ -30,4 +30,9 @@ module ApplicationHelper
   rescue
     nil
   end
+
+
+  def upload_policy
+    @upload_policy ||= AmazonHelper.upload_policy( 'current_user' , :ssl => false)
+  end
 end

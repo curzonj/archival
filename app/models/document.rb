@@ -2,6 +2,11 @@ class Document < ActiveRecord::Base
 
   serialize :cache, Hash
 
+  def initialize(*args)
+    super
+    self.cache ||= {}
+  end
+
   index do
     subject
     predicate
@@ -15,6 +20,14 @@ class Document < ActiveRecord::Base
 
   def key
     @aws_key ||= AmazonHelper.list("#{self.id}/original").first
+  end
+
+  def upload_path=(value)
+    @upload_path = value
+  end
+
+  def request_processing!
+    AmazonHelper.send_sqs 'process-document', :upload_path => @upload_path, :save_path => AmazonHelper.key("#{self.id}/")
   end
 
   def thumbnails(sized=nil)
