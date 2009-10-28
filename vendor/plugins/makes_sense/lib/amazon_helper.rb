@@ -2,13 +2,20 @@
 # specify an arbitrary prefix to seperate your file from other stuff,
 # just make sure it doesn't conflict with any other possible folder
 # names because production doesn't use a prefix
+require 'right_aws'
+require 'loggable'
+
 module AmazonHelper
   class << self
     # Anytime you pass a key into an S3 method, call this method first to put
     # the prefix on it if needed
     def key(value)
-      prefix.blank? ?
+      prefix.blank? || value.match(/^#{prefix}/) ?
         value : "#{prefix}/#{value}"
+    end
+
+    def logger
+      Loggable.logger
     end
 
     def prefix
@@ -62,7 +69,6 @@ module AmazonHelper
     # so you can safely download large files without consuming memory.
     def download(partial_key, dir=Dir.tempdir)
       full_key = key(partial_key)
-      AmazonHelper.bucket.key(full_key)
       path = "#{dir}/" + File.basename(full_key)
 
       file = File.new(path, File::CREAT|File::RDWR)
@@ -73,6 +79,13 @@ module AmazonHelper
       return [ path, headers ]
     ensure
       file.close unless file.nil?
+    end
+
+    def upload(partial_key, path, headers={})
+      full_key = key(partial_key)
+      File.open(path) do |file|
+        s3.interface.put(bucket_name, full_key, file, headers)
+      end
     end
 
     def upload_policy(component, opts={})
@@ -137,9 +150,16 @@ module AmazonHelper
       }
     end
 
+    def server_key
+      @server_key ||= `hostname`.strip
+    end
+
     def send_sqs(queue_name, msg)
+      msg = { :timestamp => Time.new.to_i, :sqs_sender => server_key }.merge(msg)
       msg_body = msg.to_json
+
       q = queue(queue_name)
+      logger.debug("Sending MSG to #{q.name}: #{msg.inspect}")
       q.send_message(msg_body)
     end
 

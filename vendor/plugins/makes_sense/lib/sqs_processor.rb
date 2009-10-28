@@ -1,4 +1,5 @@
 require 'loggable'
+require 'json'
 
 class SqsProcessor
   class << self
@@ -21,7 +22,7 @@ class SqsProcessor
 
   def run
     while true do
-      #logger.debug("Woke up for another loop on #{self}")
+      logger.debug("Woke up for another loop on #{self}")
       while msg = queue.receive do
         logger.debug("Received message on #{self}: (#{msg.id}) #{msg}")
 

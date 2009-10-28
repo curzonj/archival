@@ -1,0 +1,30 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'daemons'
+
+dir = File.expand_path(File.join(File.dirname(__FILE__), '..'))
+ 
+daemon_options = {
+  :multiple => true,
+  :dir_mode => :normal,
+  :dir => File.join(dir, 'tmp', 'pids'),
+  :backtrace => true
+}
+
+Daemons.run_proc('archival_processor', daemon_options) do
+  if ARGV.include?('--')
+    ARGV.slice! 0..ARGV.index('--')
+  else
+    ARGV.clear
+  end
+  
+  Dir.chdir dir
+  require 'lib/file_processor' 
+
+  p = FileProcessor.new
+  p.debug = true
+  p.run
+end
+
+# vim:filetype=ruby

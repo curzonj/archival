@@ -12,7 +12,7 @@ class DocumentsController < ApplicationController
   end
 
   def create
-    @document.tags ||= 'inbox'
+    @document.tags = 'inbox' if @document.tags.blank?
 
     if @document.save
       @document.request_processing!

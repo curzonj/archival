@@ -37,24 +37,4 @@ class Document < ActiveRecord::Base
       Thumbnail.new(id, source, key.name, AmazonHelper.signed_fetch(key.name))
     end
   end
-
-  def rebuild_sources
-    puts "Looking at #{self.id}"
-    list = thumbnails
-    if list.size == 3 && !list.first.has_source?
-      extracted = AmazonHelper.list("#{self.id}/extracted").first
-      if extracted.nil?
-        puts "#{self.id} is missing extracted images, but has thumbnails"
-        return
-      end
-      source_key = extracted.name
-      source_id = source_key[/\/([^\/]+)\.[^\/]+$/, 1]
-      list.each do |item|
-        src = RightAws::S3::Key.create(AmazonHelper.bucket, item.key)
-        dest_key = item.key.gsub(/#{item.id}/, source_id)
-        puts "Moving #{src.name} to #{dest_key}"
-        src.move(dest_key)
-      end
-    end
-  end
 end
