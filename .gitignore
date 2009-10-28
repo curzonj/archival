@@ -8,7 +8,8 @@ vendor/rails
 doc/app
 public/stylesheets/compiled
 *.swp
-config/app_config_local.yml
+config/private.sh
 db/schema.rb
 public/system
 tmp/restart.txt
+

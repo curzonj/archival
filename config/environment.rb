@@ -22,7 +22,7 @@ Rails::Initializer.run do |config|
   config.gem 'right_aws'
   config.gem "will_paginate"
   config.gem 'haml', :lib => 'haml', :version => '>=2.2.0'
-  config.gem 'chriseppstein-compass', :lib => 'compass', :source => 'http://gems.github.com/'
+  config.gem 'compass'
   config.gem 'texticle'
 
   # Only load the plugins named here, in the order given (default is alphabetical).
